@@ -1,0 +1,18 @@
+database:
+  # 配置Mysql数据库字符串 #
+  mysql: root:root@tcp(127.0.0.1:3306)/blogs?charset=utf8&parseTime=true&loc=Local
+
+# 配置redis字符串：#
+redis:
+  Addr: 127.0.0.1:6379
+  Pwd : ""
+
+middleware:
+  # jwt密钥，定时修改密钥保障安全性 #
+  jwt-secret: 10
+
+  # IpApi接口密钥 #
+  IpApi-Access-Key: 43875726fecc2ed07d330735d918795f
+
+
+
