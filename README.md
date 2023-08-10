@@ -14,13 +14,10 @@ git clone https://github.com/Persistence98/golang-blog.git
 
 第二步
 配置config.yaml
+```
+mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local
 
-<div class="code-block">
-```mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local```
-<button class="copy-button" data-clipboard-target=".code-block">复制</button>
-</div>
-
-
+```
 第三步
 使用命令下载gin、gorm、jwt等第三方扩展
 go mod tidy
