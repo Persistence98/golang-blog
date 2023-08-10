@@ -10,18 +10,21 @@
 
 ## 下载使用
 第一步 
+```
 git clone https://github.com/Persistence98/golang-blog.git
-
+```
 第二步
 配置config.yaml
 ```
 mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local
-
 ```
 第三步
 使用命令下载gin、gorm、jwt等第三方扩展
+```
 go mod tidy
-
+```
 第四步
+```
 go run main.go
+```
 注：必须在main.go同级目录
