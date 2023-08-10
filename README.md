@@ -18,11 +18,6 @@ git clone https://github.com/Persistence98/golang-blog.git
 ```
 mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local
 ```
-```
-redis:
-  Addr: 127.0.0.1:6379     Pwd : ""
-```
-
 第三步
 使用命令下载gin、gorm、jwt等第三方扩展
 ```
