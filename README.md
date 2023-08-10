@@ -19,7 +19,7 @@ git clone https://github.com/Persistence98/golang-blog.git
 mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local
 ```
 第三步
-使用命令下载gin、gorm、jwt等第三方扩展
+使用命令下载gin、gorm、jwt、令牌桶等第三方扩展
 ```
 go mod tidy
 ```
