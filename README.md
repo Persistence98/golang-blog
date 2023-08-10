@@ -15,7 +15,10 @@ git clone https://github.com/Persistence98/golang-blog.git
 第二步
 配置config.yaml
 
+<div class="code-block">
 ```mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local```
+<button class="copy-button" data-clipboard-target=".code-block">复制</button>
+</div>
 
 
 第三步
