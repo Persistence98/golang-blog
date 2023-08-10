@@ -14,7 +14,9 @@ git clone https://github.com/Persistence98/golang-blog.git
 
 第二步
 配置config.yaml
-```mysql: 账号:密码@tcp(127.0.0.1:3306)/数据库名称?charset=utf8&parseTime=true&loc=Local```
+
+```mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=true&loc=Local```
+
 
 第三步
 使用命令下载gin、gorm、jwt等第三方扩展
