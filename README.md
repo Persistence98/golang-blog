@@ -8,7 +8,7 @@
 内置基础：jwt鉴权、限流器（令牌桶）等
 
 
-## 下载使用
+## 使用
 第一步 
 ```
 git clone https://github.com/Persistence98/golang-blog.git
