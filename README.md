@@ -20,8 +20,7 @@ mysql: root:password@tcp(127.0.0.1:3306)/databases_name?charset=utf8&parseTime=t
 ```
 ```
 redis:
-  Addr: 127.0.0.1:6379
-  Pwd : ""
+  Addr: 127.0.0.1:6379     Pwd : ""
 ```
 
 第三步
