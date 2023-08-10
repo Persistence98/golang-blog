@@ -27,15 +27,15 @@ func init() {
 }
 
 func SetConnectMysqlMaxPool(g *gorm.DB) {
-	mysql, err := g.DB()
+	mysqlConnect, err := g.DB()
 	if err != nil {
 		panic(err)
 	}
 
 	//设置MySQL连接池最大连接数量
-	mysql.SetMaxOpenConns(30)
+	mysqlConnect.SetMaxOpenConns(30)
 	//设置MySQL连接池最大空闲数
-	mysql.SetConnMaxIdleTime(7)
+	mysqlConnect.SetConnMaxIdleTime(7)
 	// 设置连接的最大可复用时间
-	mysql.SetConnMaxLifetime(time.Hour)
+	mysqlConnect.SetConnMaxLifetime(time.Hour)
 }
