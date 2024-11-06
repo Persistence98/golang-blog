@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>登录 -- 后台管理</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+
+	<link rel="stylesheet" href="/static/layui-v2.2.5/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css" media="all" />
+	<link rel="stylesheet" href="/static/css/login/page.css" media="all" />
+</head>
+<script src="//captcha.luosimao.com/static/dist/api.js"></script>
+<body>
+<form class="layui-form">
+	<div class="container theme-default">
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-md-offset-4 main">
+				<h1 class="text-center login-title">用户登录</h1>
+				<div class="account-wall">
+
+					<img class="profile-img" style="border: 1px solid #000" src="/static/thinking_logo.png" alt="">
+
+
+					<form class="form-signin" action="https://captcha.luosimao.com/demo/submit" method="POST">
+						<div class="item" style="margin: 15px;">
+							<input class="form-control layui-input" name="user_name" placeholder="用户名" lay-verify="required" type="text" autocomplete="off" placeholder="用户名">
+						</div>
+						<div class="item" style="margin: 15px;">
+							<input class="form-control layui-input" name="password" placeholder="密码" lay-verify="required" type="password" autocomplete="off" placeholder="密码">
+						</div>
+						<div class="item" style="margin: 15px; text-align: center;padding-left: 10px;">
+							<!-- <div class="l-captcha" data-site-key="c4074f9baffcc440a1397028405220d9" data-callback="getResponse"></div>-->
+
+							<img src="/blog_admin/login/getCodeImg?captchaID={{.captchaID}}" id="captchaImg" onclick="reloadCaptcha()" style="width: 130px; height:30px; float: left;">
+							<input class="form-control layui-input" name="code" lay-verify="required" type="text" autocomplete="off" placeholder="验证码" style="float: right;width: 100px;">
+							<div style="clear: both;"></div>
+						</div>
+						<div class="item" style="margin: 15px;">
+							<input type="hidden" name="captchaID" value="{{.CaptchaID}}">
+							<button class="btn btn-lg btn-primary btn-block" lay-submit="" lay-filter="login">立即登录</button>
+							<!--	                        <a class="btn btn-default btn-lg btn-block" onclick="LUOCAPTCHA.reset()">重置验证</a>-->
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript" src="/static/layui-v2.2.5/layui.js"></script>
+<script type="text/javascript">
+
+	layui.use(['layer', 'form','jquery'], function(){
+		var layer = layui.layer
+				,form = layui.form,
+				$ = layui.jquery;
+
+		window.reloadCaptcha = function (){
+			// var captchaImg = $("#captchaImg").get(0);
+			// console.log(captchaImg)
+			// captchaImg.src = "/blog_admin/login/getCodeImg?captchaID={{.captchaID}}&timestamp=" + new Date().getTime();  // 加上时间戳避免缓存
+		}
+
+
+		form.on("submit(login)",function(data){
+			var loadingIndex = layer.load();
+			data.field.captchaID = "{{.captchaID}}";
+			$.ajax({
+				url:"/blog_admin/login/login",
+				type:"post",
+				data:JSON.stringify(data.field),
+				success:function(res) {
+					layer.close(loadingIndex); // 提交成功失败都需要关闭
+					if (res.status == 200){
+						window.location.href = "/admin/home/index";
+					}else{
+						layer.msg(res.msg)
+					}
+				},
+				error:function (xhr) {
+					layer.msg(xhr.responseJSON.msg)
+				}
+			});
+			return false;
+		});
+
+	});
+</script>
+</body>
+</html>

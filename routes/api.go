@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	Login "golang-blog/application/controller/admin/login"
 	"golang-blog/application/controller/api/v1"
 	"golang-blog/middleware"
 )
@@ -21,10 +22,14 @@ func init() {
 }
 
 func initAdminRoutes(engine *gin.Engine) {
-	api := engine.Group("admin")
+	engine.LoadHTMLGlob("templates/**/*")
+	engine.Static("/static", "public/assets")
+	api := engine.Group("blog_admin")
 	{
-		route := api.Group("article")
-		route.POST("/index", v1.Index2)
+		route := api.Group("login")
+		route.GET("", Login.Index)
+		route.GET("getCodeImg", Login.GetCodeImg)
+		route.POST("login", Login.Login)
 	}
 }
 
