@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"golang-blog/application/controller/admin/index"
 	Login "golang-blog/application/controller/admin/login"
 	"golang-blog/application/controller/api/v1"
 	"golang-blog/middleware"
@@ -21,6 +22,7 @@ func init() {
 	}
 }
 
+/*后台路由*/
 func initAdminRoutes(engine *gin.Engine) {
 	engine.LoadHTMLGlob("templates/**/*")
 	engine.Static("/static", "public/assets")
@@ -31,8 +33,15 @@ func initAdminRoutes(engine *gin.Engine) {
 		route.GET("getCodeImg", Login.GetCodeImg)
 		route.POST("login", Login.Login)
 	}
+	{
+		route := api.Group("home")
+		route.GET("index", index.Index)
+		route.GET("console", index.Console)
+	}
+
 }
 
+/*接口路由*/
 func initApiRoutes(engine *gin.Engine) {
 	api := engine.Group("api")
 	api.Use(middleware.JwtMiddleware()) //jwt鉴权

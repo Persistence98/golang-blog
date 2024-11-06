@@ -10,7 +10,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
 
-	<link rel="stylesheet" href="/static/layui-v2.2.5/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/layui-v2.9.18/css/layui.css" media="all" />
 	<link rel="stylesheet" href="/static/css/bootstrap.min.css" media="all" />
 	<link rel="stylesheet" href="/static/css/login/page.css" media="all" />
 </head>
@@ -52,7 +52,7 @@
 	</div>
 </form>
 
-<script type="text/javascript" src="/static/layui-v2.2.5/layui.js"></script>
+<script type="text/javascript" src="/static/layui-v2.9.18/layui.js"></script>
 <script type="text/javascript">
 
 	layui.use(['layer', 'form','jquery'], function(){
@@ -77,12 +77,13 @@
 				success:function(res) {
 					layer.close(loadingIndex); // 提交成功失败都需要关闭
 					if (res.status == 200){
-						window.location.href = "/admin/home/index";
+						window.location.href = "/blog_admin/home/index";
 					}else{
 						layer.msg(res.msg)
 					}
 				},
 				error:function (xhr) {
+					layer.close(loadingIndex); // 提交成功失败都需要关闭
 					layer.msg(xhr.responseJSON.msg)
 				}
 			});
