@@ -12,7 +12,9 @@ import (
 func init() {
 	routes := gin.Default()
 
-	initAdminRoutes(routes)                        //初始化后台路由
+	routes.Use(middleware.HeadersMiddleware()) //请求头中间件
+	initAdminRoutes(routes)                    //初始化后台路由
+
 	routes.Use(middleware.RateLimiterMiddleware()) //令牌桶中间件
 	initApiRoutes(routes)                          //初始化接口路由
 
@@ -30,9 +32,11 @@ func initAdminRoutes(engine *gin.Engine) {
 	{
 		route := api.Group("login")
 		route.GET("", Login.Index)
-		route.GET("getCodeImg", Login.GetCodeImg)
 		route.POST("login", Login.Login)
+		route.GET("getCodeImg", Login.GetCodeImg)
+		route.POST("reloadCaptcha", Login.ReloadCaptcha)
 	}
+	api.Use(middleware.AdminAuthMiddle())
 	{
 		route := api.Group("home")
 		route.GET("index", index.Index)

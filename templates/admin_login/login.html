@@ -60,16 +60,31 @@
 				,form = layui.form,
 				$ = layui.jquery;
 
+		var captchaID = "";
 		window.reloadCaptcha = function (){
-			// var captchaImg = $("#captchaImg").get(0);
-			// console.log(captchaImg)
-			// captchaImg.src = "/blog_admin/login/getCodeImg?captchaID={{.captchaID}}&timestamp=" + new Date().getTime();  // 加上时间戳避免缓存
+			var captchaImg = $("#captchaImg").get(0);
+			$.ajax({
+				url: "/blog_admin/login/reloadCaptcha",
+				type:"post",
+				success:function (data){
+					if (data.status == 200){
+						captchaID = data.data;
+						captchaImg.src = "/blog_admin/login/getCodeImg?captchaID="+ data.data +"&timestamp=" + new Date().getTime();  // 加上时间戳避免缓存
+					}else {
+						layer.msg(data.msg)
+					}
+				},error:function (xhr){
+					// console.log(xhr)
+					// layer.msg(xhr.responseJSON.msg)
+				}
+			})
 		}
 
 
 		form.on("submit(login)",function(data){
 			var loadingIndex = layer.load();
-			data.field.captchaID = "{{.captchaID}}";
+			data.field.captchaID = captchaID ? captchaID : "{{.captchaID}}";
+
 			$.ajax({
 				url:"/blog_admin/login/login",
 				type:"post",
@@ -77,6 +92,7 @@
 				success:function(res) {
 					layer.close(loadingIndex); // 提交成功失败都需要关闭
 					if (res.status == 200){
+						localStorage.setItem("data",res.data);
 						window.location.href = "/blog_admin/home/index";
 					}else{
 						layer.msg(res.msg)
@@ -84,7 +100,11 @@
 				},
 				error:function (xhr) {
 					layer.close(loadingIndex); // 提交成功失败都需要关闭
+					if (xhr.status == 406){
+						reloadCaptcha();
+					}
 					layer.msg(xhr.responseJSON.msg)
+					// console.log(xhr)
 				}
 			});
 			return false;
