@@ -3,8 +3,10 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"golang-blog/application/controller/admin/article"
 	"golang-blog/application/controller/admin/index"
 	Login "golang-blog/application/controller/admin/login"
+	"golang-blog/application/controller/admin/user"
 	"golang-blog/application/controller/api/v1"
 	"golang-blog/middleware"
 )
@@ -24,27 +26,6 @@ func init() {
 	}
 }
 
-/*后台路由*/
-func initAdminRoutes(engine *gin.Engine) {
-	engine.LoadHTMLGlob("templates/**/*")
-	engine.Static("/static", "public/assets")
-	api := engine.Group("blog_admin")
-	{
-		route := api.Group("login")
-		route.GET("", Login.Index)
-		route.POST("login", Login.Login)
-		route.GET("getCodeImg", Login.GetCodeImg)
-		route.POST("reloadCaptcha", Login.ReloadCaptcha)
-	}
-	api.Use(middleware.AdminAuthMiddle())
-	{
-		route := api.Group("home")
-		route.GET("index", index.Index)
-		route.GET("console", index.Console)
-	}
-
-}
-
 /*接口路由*/
 func initApiRoutes(engine *gin.Engine) {
 	api := engine.Group("api")
@@ -52,5 +33,33 @@ func initApiRoutes(engine *gin.Engine) {
 	{
 		route := api.Group("v1")
 		route.POST("/index", v1.Index)
+	}
+}
+
+/*后台路由*/
+func initAdminRoutes(engine *gin.Engine) {
+	engine.LoadHTMLGlob("templates/**/*")
+	engine.Static("/static", "public/assets")
+	api := engine.Group("blog_admin")
+	{ /* 登陆模块 */
+		route := api.Group("login")
+		route.GET("", Login.Index)
+		route.POST("login", Login.Login)
+		route.GET("getCodeImg", Login.GetCodeImg)
+		route.POST("reloadCaptcha", Login.ReloadCaptcha)
+	}
+	api.Use(middleware.AdminAuthMiddle())
+	{ /* 首页框架 */
+		route := api.Group("home")
+		route.GET("index", index.Index)
+		route.GET("console", index.Console)
+	}
+	{ /* 用户管理 */
+		route := api.Group("users")
+		route.GET("list", user.List)
+	}
+	{ /* 内容管理 */
+		route := api.Group("article")
+		route.GET("cate_list", article.CateList)
 	}
 }

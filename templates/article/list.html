@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+{{ define "article/list.html" }}
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>SMI后台管理</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <link rel="stylesheet" href="/static/layui-v2.9.18/css/layui.css" media="all" />
+  <link rel="stylesheet" href="/static/layuiadmin/style/admin.css" media="all" />
+</head>
+<body>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header">分类列表</div>
+        <div class="layui-card-body">
+          <div class="layui-form-item" style="margin-left: 10px; margin-top: 10px">
+            <button id="addtype" type="button" class="layui-btn layui-btn-primary">
+              <i class="layui-icon">&#xe608;</i>添加用户
+            </button>
+            <button id="upxls" type="button" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe608;</i>批量导入</button>
+            <button id="moban" type="button" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe608;</i>下载模板</button>
+
+            <button id="download_level_excel" type="button" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe608;</i>下载用户数据</button>
+          </div>
+          <form class="layui-form">
+            <div class="layui-inline" style="width: 100%;">
+              <label class="layui-form-label">请选择区域</label>
+              <div class="layui-col-md3" id="shop_area">
+                <div id="type_id_1" class="mmod">
+                  <select name="type_id_1" lay-verify="" id="selected_id_1" lay-filter="type_id_1">
+                    <option value="0">请选择</option>
+                    <?php foreach ($level_list as $k=> $area){ ?>
+
+                    <option  value="<?php echo $area['id'] ?>"><?php echo $area['level_name'] ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div style="clear: both"></div>
+          </form>
+
+          <form class="layui-form "  action="">
+
+            <div class="layui-inline">
+              <label class="layui-form-label">职位</label>
+              <div class="layui-input-block">
+                <select name="jobtitle_uuid" id="jobtitle_uuid">
+                  <option value="">请选择</option>
+                  <?php foreach ($jobtitle_list as $area) { ?>
+                  <option value="<?php echo $area['jobtitle_uuid'] ?>"><?php echo $area['jobtitle'] ?></option>
+                  <?php } ?>
+
+                </select>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">在职状态</label>
+              <div class="layui-input-block">
+                <select name="state" id="state">
+                  <option value="0">请选择</option>
+                  <option value="1">在职</option>
+                  <option value="2">离职</option>
+
+
+                </select>
+              </div>
+            </div>
+
+
+          </form>
+
+
+
+          <div class="test-table-reload-btn" style="margin-bottom: 10px">
+            搜索名称：
+            <div class="layui-inline">
+              <input class="layui-input" name="id" id="test-table-demoReload" autocomplete="off" />
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+          </div>
+
+          <table class="layui-hide" id="test-table-reload" lay-filter="brand"></table>
+
+
+          <script type="text/html" id="mytoolbar">
+
+            <a class="layui-btn layui-btn-xs" lay-event="edit">查看详情</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">离职</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="up">在职</a>
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="/static/layui-v2.9.18/layui.js"></script>
+
+<script>
+  layui.config({
+    base: '/static/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'console', 'sample', 'table', 'form', 'laydate', 'upload'], function () {
+    var table = layui.table;
+    var form = layui.form;
+    var laydate = layui.laydate;
+    var upload = layui.upload;
+    laydate.render({
+      type:'datetime',
+      elem: '#start_time' //指定元素
+    });
+    laydate.render({
+      type:'datetime',
+      elem: '#end_time' //指定元素
+    });
+    var level_id = 0;
+
+    //方法级渲染
+    table.render({
+      elem: '#test-table-reload',
+      url: "/admin/front_user/list_data?ischeck=1",
+      cols: [
+        [
+
+          {
+            field: 'id',
+            title: 'ID',
+            width: 80,
+            sort: true,
+            fixed: true
+          }
+          , {
+          field: 'realname',
+          title: '姓名',
+
+
+        }, {
+          field: 'tel',
+          title: '手机号码'
+        }, {
+          field: 'jobtitle',
+          title: '职位'
+        }, {
+          field: 'level_name',
+          title: '所属区域'
+        }, {
+          field: 'create_time',
+          title: '创建时间'
+        }, {
+          field: 'state_text',
+          title: '在职状态'
+        }
+
+
+
+
+          , {
+          fixed: 'right',
+          title: '操作',
+          align: 'center',
+          toolbar: '#mytoolbar',
+          width: 300
+        }
+        ]
+      ],
+      page: true,
+      height: 'full-250',
+      cellMinWidth: 80
+    });
+
+    var $ = layui.$,
+            active = {
+              reload: function () {
+                var demoReload = $('#test-table-demoReload');
+                var jobtitle_uuid = $('#jobtitle_uuid');
+                var state = $('#state');
+
+
+
+                var arr = new Array();
+
+                $(".form1>div select").each(function() {
+
+                  if ($(this).children(":selected").val() != 0) {
+                    arr.push($(this).children(":selected").val());
+                  }
+
+                });
+                //执行重载
+                table.reload('test-table-reload', {
+                  page: {
+                    curr: 1 //重新从第 1 页开始
+                  },
+                  where: {
+                    keyword: demoReload.val(),
+                    jobtitle_uuid: jobtitle_uuid.val(),
+                    state: state.val(),
+
+                    level_id:level_id
+                  }
+                });
+              }
+            };
+
+    $('.test-table-reload-btn .layui-btn').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+
+    table.on('tool(brand)', function (obj) {
+      var data = obj.data;
+      // layer.msg('ID：'+ data.id + ' 的查看操作');
+      if (obj.event === 'del') {
+        layer.confirm('是否操作', function (index) {
+
+          //obj.del();
+
+          layer.close(index);
+
+          $.ajax({
+            type: "post",
+            url: "/admin/front_user/del_data",
+            data: {
+              "id": data.id
+            },
+            success: function (result_str) {
+
+              result = JSON.parse(result_str);
+
+              if (result['status'] == 200) {
+                if ($(".layui-laypage-btn") != null) {
+                  $(".layui-laypage-btn")[0].click();
+                } else {
+                  location.reload();
+                }
+              } else {
+
+                layer.alert(result['msg']);
+
+              }
+
+            },
+            error: function () {
+
+            }
+
+          });
+
+        });
+      }else if (obj.event === 'up') {
+        layer.confirm('是否操作', function (index) {
+
+          //obj.del();
+
+          layer.close(index);
+
+          $.ajax({
+            type: "post",
+            url: "/admin/front_user/up_data",
+            data: {
+              "id": data.id
+            },
+            success: function (result_str) {
+
+              result = JSON.parse(result_str);
+
+              if (result['status'] == 200) {
+                if ($(".layui-laypage-btn") != null) {
+                  $(".layui-laypage-btn")[0].click();
+                } else {
+                  location.reload();
+                }
+              } else {
+
+                layer.alert(result['msg']);
+
+              }
+
+            },
+            error: function () {
+
+            }
+
+          });
+
+        });
+      } else if (obj.event === 'edit') {
+        //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+        layer.open({
+          type: 2,
+          title: '查看详情',
+          maxmin: true,
+          shadeClose: false, //点击遮罩关闭层
+          area: ['100%', '100%'],
+          content: '/admin/front_user/edit' + '?id=' + data.id,
+          cancel: function (index) {
+            if ($(".layui-laypage-btn") != null) {
+              $(".layui-laypage-btn")[0].click();
+            } else {
+              location.reload();
+            }
+          },
+          end: function (index) {
+            if ($(".layui-laypage-btn") != null) {
+              $(".layui-laypage-btn")[0].click();
+            } else {
+              location.reload();
+            }
+          }
+        });
+
+      }
+
+    });
+
+    $("#addtype").on("click", function () {
+
+      layer.open({
+
+        type: 2,
+        title: '添加用户',
+        scrollbar: true,
+        shadeClose: false, //点击遮罩关闭层
+        area: ['100%', '100%'],
+        content: '/admin/front_user/add',
+        cancel: function (index) {
+          if ($(".layui-laypage-btn")[0] != null) {
+            $(".layui-laypage-btn")[0].click();
+          } else {
+            location.reload();
+          }
+        },
+        end: function (index) {
+          if ($(".layui-laypage-btn")[0] != null) {
+            $(".layui-laypage-btn")[0].click();
+          } else {
+            location.reload();
+          }
+          //                location.reload();
+        }
+      });
+
+    });
+
+
+    function add_type_select(value,mm_level) {
+      if(value==='0'){
+
+        if(mm_level==1){
+          level_id=value;
+        }else{
+          var last_level=mm_level-1;
+          var mmdf='#selected_id_'+last_level+' option:selected';
+          // console.log($(mmdf));
+          level_id=$(mmdf).val();
+        }
+        // console.log(level_id);
+        del_type_select(mm_level+1);
+      }else{
+        $.ajax({
+          type:'post',
+          url:"/admin/front_user/getLevelSonList",
+          data:{'level_id':value},
+          success:function (data) {
+            var obj=new Function('return '+data)();
+            level_id=value;
+            // console.log(level_id);
+            var levels=parseInt(obj.level)+1;
+            del_type_select(levels);
+            if(obj.is_son==1){
+              var select='<div id="type_id_'+levels+'" class="mmod" ><select name="type_id_'+levels+'" id="selected_id_'+levels+'" lay-verify="" lay-filter="type_id_'+levels+'" >';
+              select+='<option value="0">请选择</option>';
+              $.each(obj.son_list,function (i,item) {
+                select+='<option value="'+item.id+'">'+item.level_name+'</option>'
+              })
+              select+='</select></div>';
+              $('#shop_area').append(select);
+              form.render();
+            }
+
+            //console.log(attr);
+          }
+        })
+      }
+
+    }
+    function del_type_select(level) {
+      for(var l=level;l<11;l++){
+        var select_id='#type_id_'+l;
+        //console.log(select_id);
+        $(select_id).remove();
+      }
+    }
+
+    for(var lk=1;lk<=20;lk++){
+      var mm='select(type_id_'+lk+')';
+      let mm_level=lk;
+      form.on((mm), function(data){
+        // if(data.value==0){
+        //return false;
+        // }
+        add_type_select(data.value,mm_level);
+        return false;
+      });
+    }
+
+    $("#moban").click(function() {
+
+      window.open('/admin/front_user/excel_moban');
+
+    });
+
+    $("#download_level_excel").click(function() {
+
+      window.open('/admin/ExcelImportExport/download_level_excel');
+
+    });
+    upload.render({
+      elem: '#upxls',
+      url: '/admin/front_user/upload_excel',
+      accept: 'file' //xls文件
+      ,
+      before: function(obj) {
+
+        layer.load(1);
+
+      },
+      exts: 'xlsx',
+      error:function(res){
+        layer.closeAll('loading');
+      },
+      done: function(res) {
+        layer.closeAll('loading');
+        // console.log(res);
+
+        // if (res.status==200) {
+
+        //     $(".layui-laypage-btn")[0].click()
+
+        // }
+        var resArr = res['err_data'];
+
+        var resStr = "";
+
+        if (resArr.length > 0) {
+
+          for (var i = resArr.length - 1; i >= 0; i--) {
+
+            resStr += "name:" + resArr[i]["data"] + ",filled：" + resArr[i]["reson"];
+
+            resStr += "<br/>"
+
+
+          }
+          resStr += "<br/>"
+
+
+
+          layer.alert(resStr, function(index) {
+            //do something
+
+            if ($(".layui-laypage-btn")[0] != null) {
+              $(".layui-laypage-btn")[0].click();
+            } else {
+              location.reload();
+            }
+          });
+
+        } else {
+
+          if ($(".layui-laypage-btn")[0] != null) {
+            $(".layui-laypage-btn")[0].click();
+          } else {
+            location.reload();
+          }
+
+        }
+
+      }
+    });
+
+
+
+  });
+</script>
+</body>
+
+</html>
+{{ end }}
