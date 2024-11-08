@@ -57,6 +57,7 @@ func initAdminRoutes(engine *gin.Engine) {
 	{ /* 用户管理 */
 		route := api.Group("users")
 		route.GET("list", user.List)
+		route.GET("list_data", user.ListData)
 	}
 	{ /* 内容管理 */
 		route := api.Group("article")

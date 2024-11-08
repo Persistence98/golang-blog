@@ -28,14 +28,6 @@
           </div>
           <form class="layui-form "  action="">
             <div class="layui-inline">
-              <label class="layui-form-label">职位</label>
-              <div class="layui-input-block">
-                <select name="jobtitle_uuid" id="jobtitle_uuid">
-                  <option value="">请选择</option>
-                </select>
-              </div>
-            </div>
-            <div class="layui-inline">
               <label class="layui-form-label">在职状态</label>
               <div class="layui-input-block">
                 <select name="state" id="state">
@@ -47,7 +39,7 @@
             </div>
           </form>
 
-          <div class="test-table-reload-btn" style="margin-bottom: 10px">
+          <div class="test-table-reload-btn" style="margin: 10px 0px;">
             搜索名称：
             <div class="layui-inline">
               <input class="layui-input" name="id" id="test-table-demoReload" autocomplete="off" />
@@ -94,10 +86,9 @@
     //方法级渲染
     table.render({
       elem: '#test-table-reload',
-      url: "/admin/front_user/list_data?ischeck=1",
+      url: "/blog_admin/users/list_data",
       cols: [
         [
-
           {
             field: 'id',
             title: 'ID',
@@ -106,31 +97,27 @@
             fixed: true
           }
           , {
-          field: 'realname',
+          field: 'nickname',
           title: '姓名',
-
-
         }, {
-          field: 'tel',
-          title: '手机号码'
+          field: 'user_name',
+          title: '账号'
         }, {
-          field: 'jobtitle',
-          title: '职位'
+          field: 'sex',
+          title: '性别'
         }, {
-          field: 'level_name',
-          title: '所属区域'
+          field: 'address',
+          title: '住址'
         }, {
-          field: 'create_time',
+          field: 'created_at',
           title: '创建时间'
         }, {
-          field: 'state_text',
+          field: 'status',
           title: '在职状态'
-        }
-
-
-
-
-          , {
+        }, {
+          field: 'updated_at',
+          title: '最后操作时间'
+        }, {
           fixed: 'right',
           title: '操作',
           align: 'center',
@@ -150,9 +137,6 @@
                 var demoReload = $('#test-table-demoReload');
                 var jobtitle_uuid = $('#jobtitle_uuid');
                 var state = $('#state');
-
-
-
                 var arr = new Array();
 
                 $(".form1>div select").each(function() {
