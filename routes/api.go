@@ -58,6 +58,7 @@ func initAdminRoutes(engine *gin.Engine) {
 		route := api.Group("users")
 		route.GET("list", user.List)
 		route.GET("list_data", user.ListData)
+		route.GET("DownLoadExcel", user.DownLoadExcel)
 	}
 	{ /* 内容管理 */
 		route := api.Group("article")

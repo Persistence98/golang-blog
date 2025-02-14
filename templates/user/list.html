@@ -22,8 +22,6 @@
             <button id="addtype" type="button" class="layui-btn layui-btn-primary">
               <i class="layui-icon">&#xe608;</i>添加用户
             </button>
-            <button id="upxls" type="button" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe608;</i>批量导入</button>
-            <button id="moban" type="button" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe608;</i>下载模板</button>
             <button id="download_level_excel" type="button" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe608;</i>下载用户数据</button>
           </div>
           <form class="layui-form "  action="">
@@ -372,9 +370,7 @@
     });
 
     $("#download_level_excel").click(function() {
-
-      window.open('/admin/ExcelImportExport/download_level_excel');
-
+      window.open('/blog_admin/users/DownLoadExcel');
     });
     upload.render({
       elem: '#upxls',

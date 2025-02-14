@@ -31,7 +31,7 @@ func ListData(ctx *gin.Context) {
 	query := config.DB
 
 	if pages.Keyword != "" {
-		query = query.Where("user_name like ? or address like ? or nickname like ?", pages.Keyword+"%", "%"+pages.Keyword+"%", pages.Keyword+"%")
+		query = query.Where("user_name like ? or address like ? or nickname like ?", pages.Keyword+"%", pages.Keyword+"%", pages.Keyword+"%")
 	}
 	if pages.State != 0 {
 		query = query.Where("status = ?", pages.State)
@@ -53,12 +53,6 @@ func ListData(ctx *gin.Context) {
 		})
 		return
 	}
-	//config.Redis.Del(ctx, "user_count")
-	//count, err := config.Redis.Get(ctx, "user_count").Int64()
-	//if err == redis.Nil {
-	//
-	//	config.Redis.Set(ctx, "user_count", count, 30*time.Minute)
-	//}
 
 	sexMap := map[string]string{
 		"1": "男",
@@ -81,4 +75,12 @@ func ListData(ctx *gin.Context) {
 		"data":  data,
 	})
 	return
+}
+
+// DownLoadExcel 下载用户数据
+func DownLoadExcel(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "请求成功！",
+	})
 }

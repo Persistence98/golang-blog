@@ -1,7 +1,6 @@
 package Login
 
 import (
-	"context"
 	"github.com/dchest/captcha"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -111,7 +110,7 @@ func Login(ctx *gin.Context) {
 		})
 		return
 	}
-	config.Redis.HSet(context.Background(), "token", jwtString, user.ID)
+	config.Redis.HSet(ctx, "token", jwtString, user.ID)
 	ctx.SetCookie("token", jwtString, 86400, "/", "", false, true)
 
 	ctx.JSON(http.StatusOK, gin.H{
